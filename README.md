@@ -1,2 +1,11 @@
-# win10.worm.vbs.aborter
-a malware that can infect files, disable run box, disable task manager, disable regedit, disable cmd, disallowing access going to appdata or temp (if you run it in temp or appdata), etc, this worm can harm your computer, OR EVEN WORSE
+#     _    ____   ___  ____ _____ _____ ____  
+#    / \  | __ ) / _ \|  _ \_   _| ____|  _ \ 
+#   / _ \ |  _ \| | | | |_) || | |  _| | |_) |
+#  / ___ \| |_) | |_| |  _ < | | | |___|  _ < 
+# /_/   \_\____/ \___/|_| \_\|_| |_____|_| \_\
+
+Aborter is a worm that can infect all folders, disable task manager, disable run box, disable command prompt, disable regedit, disallowing you for access to the appdata folder and the temp folder (if you ran it in appdata or temp), kills random processes every minute, spam files in the desktop, deleting hal.dll, etc.
+
+This virus can render your computer unbootable, for these things to work, you must run the script as administrator, or else there might be a error that says "permission denied".
+
+Note: This virus is still in W.I.P, don't say suggestions that relate to disabling UAC.
