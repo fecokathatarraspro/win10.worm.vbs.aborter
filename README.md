@@ -9,4 +9,8 @@ Aborter is a worm that can infect all folders, disable task manager, disable run
 
 This virus can render your computer unbootable, for these things to work, you must run the script as administrator, or else there might be a error that says "permission denied".
 
+# REQUIREMENTS TO RUN THE WORM
+1. Run this script as administrator or run the script in the administrator account.
+2. The operating system should be on windows 10 or higher, so it cannot be linux, macos, or etc.
+
 Note: This virus is still in W.I.P, don't say suggestions that relate to disabling UAC.
